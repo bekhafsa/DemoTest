@@ -1,47 +1,49 @@
-package com.bmw.cc.servicedemandidentifier.api.calltopic.entity;
+package com.example.demo.entity;
 
-import java.util.Objects;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
-import com.bmw.cc.servicedemandidentifier.spring.exception.BusinessException;
-import com.bmw.cc.servicedemandidentifier.web.logging.entity.LogErrorId;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.micrometer.core.instrument.util.StringUtils;
-import io.swagger.annotations.ApiModelProperty;
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+public class Message {
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class SnsEnvelope {
-
-    @ApiModelProperty("Message")
-    private final String message;
-
-    public String getMessage() {
-        return message;
+    public Message(final String sender, final String content) {
+        this.sender = sender;
+        this.content = content;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final SnsEnvelope that = (SnsEnvelope) o;
-        return Objects.equals(message, that.message);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String sender;
+    private String content;
+
+
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(message);
+    public String getSender() {
+        return sender;
     }
 
-    @JsonCreator
-    public SnsEnvelope(@JsonProperty(value = "Message", required = true) final String message) {
-        if (StringUtils.isBlank(message)) {
-            throw new BusinessException(LogErrorId.INTERNAL_ERROR, "The parsed TopicMessage is blank.");
-        }
-        this.message = message;
+    public String getContent() {
+        return content;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public void setSender(final String sender) {
+        this.sender = sender;
+    }
+
+    public void setContent(final String content) {
+        this.content = content;
     }
 }
